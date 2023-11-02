@@ -11,8 +11,12 @@
 
 ;; APPEARANCE
 
-;; Legible fonts
-(set-face-attribute 'default nil :font "Consolas" :height 110)
+;; Taken from https://codeberg.org/daviwil/dotfiles/src/branch/master/Emacs.org
+(pcase system-type
+  ('gnu/linux
+   (set-face-attribute 'default nil :font "JetBrains Mono" :height 110))
+  ('windows-nt
+   (set-face-attribute 'default nil :font "Consolas" :height 110)))
 
 ;; Nice themes
 (use-package doom-themes
@@ -22,10 +26,29 @@
 	doom-themes-enable-italic nil)
   (load-theme 'doom-gruvbox t))
 
-;; Taken from https://github.com/ianyepan/.wsl-emacs.d
-(use-package display-line-numbers
-  :hook (prog-mode . display-line-numbers-mode)
-  :config (setq-default display-line-numbers-width 3))
+;; Line numbers
+;; Should I wrap this inside use-package?
+(dolist (mode '(text-mode-hook
+		prog-mode-hook
+		conf-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 1))))
+
+(dolist (mode '(org-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode -1))))
+
+(setq display-line-numbers-width 3)
+
+;; Better defaults
+;; Mostly from System Crafters community
+(column-number-mode)
+(delete-selection-mode)
+(global-auto-revert-mode)
+(recentf-mode)
+
+(setq history-length 25)
+(savehist-mode)
+(save-place-mode)
+(setq use-dialog-box nil)
 
 
 ;; COMPLETION FRAMEWORK
@@ -61,7 +84,7 @@
 
 ;; PROGRAMMING
 
-;; ChatGPT wrote this for me
+;; Thanks to https://www.adventuresinwhy.com/post/eglot/
 (use-package eglot
   :hook ((python-ts-mode c-ts-mode c++-ts-mode) . eglot-ensure)
   :custom (eglot-autoshutdown t))

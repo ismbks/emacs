@@ -1,4 +1,7 @@
 elpa/
 tree-sitter/
 custom.el
+history
+places
+recentf
 *~
