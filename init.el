@@ -19,8 +19,8 @@
   :ensure t
   :config
   (setq doom-themes-enable-bold nil
-	doom-themes-enable-italic nil))
-  (load-theme 'doom-gruvbox t)
+	doom-themes-enable-italic nil)
+  (load-theme 'doom-gruvbox t))
 
 ;; Taken from https://github.com/ianyepan/.wsl-emacs.d
 (use-package display-line-numbers
@@ -63,7 +63,7 @@
 
 ;; ChatGPT wrote this for me
 (use-package eglot
-  :hook ((python-mode c-mode c++-mode) . eglot-ensure)
+  :hook ((python-ts-mode c-ts-mode c++-ts-mode) . eglot-ensure)
   :custom (eglot-autoshutdown t))
 
 ;; Author calls this package "a hack"
